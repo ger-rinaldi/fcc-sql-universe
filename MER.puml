@@ -1,0 +1,54 @@
+@startuml universe-fcc
+
+hide empty methods
+
+entity cluster {
+    * cluster_id: SERIAL <<PK>>
+    ..
+    + name: VARCHAR [60] UNIQUE NOT NULL
+    + is_simetric: BOOLEAN NOT NULL
+}
+
+entity galaxy { /' FIVE '/
+    * galaxy_id: SERIAL <<PK>>
+    ..
+    + name: VARCHAR [60] UNIQUE NOT NULL
+    + arm_amount: INT NOT NULL
+    + observations: TEXT
+    - cluster_id: INT NOT NULL <<FK>>
+}
+
+entity star { /' FIVE '/
+    * star_id: SERIAL <<PK>>
+    ..
+    + name: VARCHAR [60] UNIQUE NOT NULL
+    + binary_system: BOOLEAN NOT NULL
+    + diameter: INT
+    - galaxy_id : INT NOT NULL <<FK>>
+}
+
+entity planet { /' FIVE '/
+    * planet_id: SERIAL <<PK>>
+    ..
+    + name: VARCHAR [60] UNIQUE NOT NULL
+    + distance_from_star_au: NUMERIC [5,1]
+    + has_water: BOOLEAN
+    - star_id : INT NOT NULL <<FK>>
+}
+
+entity moon { /' FIVE '/
+    * moon_id: SERIAL <<PK>>
+    ..
+    + name: VARCHAR [60] UNIQUE NOT NULL
+    + has_water: BOOLEAN
+    + tidally_locked: BOOLEAN
+    - planet_id : INT NOT NULL <<FK>>
+}
+
+
+cluster ||--|{ galaxy
+galaxy ||--|{ star
+star ||-|{ planet
+planet ||-u-|{ moon
+
+@enduml
